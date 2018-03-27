@@ -1,56 +1,13 @@
 var rp= require('request-promise');
 
-var chartData={
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August'],
-    datasets: [
-      {
-        label: 'Apple',
-        fill: false,
-        lineTension: 0.1, 
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-       pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        data: [65, 59, 80, 81, 56, 55, 40,80]
-      }, 
-      {
-        label: 'facebook',
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-       pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
-        data: [55, 19, 110, 31, 86, 15, 20,30]
-      }
-
-
-
-        ]
-      }
-
+var data=[];
+var astock={
+    name: '',
+    data: data,
+    tooltip: {
+      valueDecimals: 2
+    }
+  }
 
 
 function StockHandler(){
@@ -58,13 +15,18 @@ function StockHandler(){
         var stock=req.query.stock;
         console.log("en stockhandler");
         var options = {
-			encoding: null,
+            //encoding: null,
+            json: true,
             url: encodeURI(`https://api.iextrading.com/1.0/stock/${stock}/chart/1y`)
 		};
         rp(options).then(function(chart){
-            console.log("Days: "+chart.length);
+            console.log(JSON.stringify(chart));
+            data=chart.map(aday=>([new Date(aday.date).getTime(),aday.close]));
+            astock.name=stock;
+            astock.data=data;
+            console.log("Devuelvo config: "+JSON.stringify(astock.data[0]));
             res.json({"message":"Stock added",
-                "chartData":  chartData,
+                "chartData":  astock,
                 "stocks": ["Facebook","Apple"]
         });   
 
