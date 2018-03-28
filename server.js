@@ -19,5 +19,5 @@ app.get('/api/addStock', (req, res) => {
 
   });
 */
-routes(app);
+//routes(app);
 app.listen(port, () => console.log(`Listening on port ${port}`));

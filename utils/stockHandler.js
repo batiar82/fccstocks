@@ -1,19 +1,33 @@
 var rp= require('request-promise');
 
 var data=[];
-var astock={
+var mockSerie={
     name: '',
     data: data,
     tooltip: {
       valueDecimals: 2
     }
   }
+var stocks;/*={
+    config={
+        rangeSelector: {
+          selected: 1
+        },
+        title: {
+          text: 'Stock Prices'
+        },
+        series:[]
+      }
 
 
-function StockHandler(){
-    this.addStock=function(req,res){
-        var stock=req.query.stock;
-        console.log("en stockhandler");
+}*/
+
+function StockHandler(ws){
+    this.sendCurrentStocks=function(){
+        return null;
+    }
+    this.addStock=function(stock){
+        console.log("en stockhandler "+stock);
         var options = {
             //encoding: null,
             json: true,
@@ -25,14 +39,10 @@ function StockHandler(){
             astock.name=stock;
             astock.data=data;
             console.log("Devuelvo config: "+JSON.stringify(astock.data[0]));
-            res.json({"message":"Stock added",
-                "chartData":  astock,
-                "stocks": ["Facebook","Apple"]
-        });   
-
+            ws.send({message: 'Stock added',config:  astock,})
         }).catch(function(error){
             console.log("ERror: "+error);
-            res.json({"message": "Code Not Found"});
+            return {message: "Code Not Found"};
         });
         
     }

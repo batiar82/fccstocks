@@ -1,6 +1,6 @@
 var StockHandler = require('../utils/stockHandler.js');
-module.exports = function (app) {
+module.exports = function (wss) {
     var stockHandler=new StockHandler();
-    app.route('/api/addStock')
-        .get(stockHandler.addStock);
+    //app.route('/api/addStock')
+      //  .get(stockHandler.addStock);
 }
