@@ -84,3 +84,6 @@ body{
 .stocks{
   margin-left: 5px;
 }
+.highcharts-container{
+  height: auto !important
+}

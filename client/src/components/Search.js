@@ -13,7 +13,7 @@ class Search extends Component{
         return(
         <div className="search">
             <form className="form-inline" onSubmit={this._handleSubmit.bind(this)}>
-            <input className="form-control mb-2 mr-sm-2 mb-sm-0" type="text" name="stock-search" placeholder="Type a stock code" ref={(input) => this._stock=input}></input>
+            <input className="form-control mb-2 mr-sm-2 mb-sm-0" type="text" name="stock-search" placeholder="Type a stock code" ref={(input) => this._stock=input} required></input>
             <button type="submit" className="btn btn-primary">Search</button>
             <p>{this.props.message.description}</p>
             </form>

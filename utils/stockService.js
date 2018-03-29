@@ -67,6 +67,33 @@ function searchStockInfo(code) {
     })
 };
 
+function getStockAndSeriePosition(code){
+    var positions={};
+    var tempindex;
+    db.config.series.forEach(function(item,idex){
+        console.log("item: "+JSON.stringify(item));
+        console.log("code: "+JSON.stringify(code));
+        console.log("index "+idex);
+        console.log("iguales "+item.name.toLowerCase()==code.toLowerCase());
+        if(item.name.toLowerCase()==code.toLowerCase())
+            tempindex=idex;
+    });
+    console.log("INDEX LOCO: "+tempindex)
+    db.config.series.forEach(function(item,idex){
+        console.log("Comparo "+item.name.toLowerCase()+" "
+        +code.toLowerCase()+" == "+item.name.toLowerCase()==code.toLowerCase()+" "+ idex)
+        if(item.name.toLowerCase()==code.toLowerCase())
+            positions.series=idex;
+    })
+    db.stocks.forEach(function(item,idex){
+        if(item.code.toLowerCase()==code.toLowerCase())
+            positions.stocks=idex;
+    });
+
+    return positions;
+}
+
+
 function codePresent(code) {
     var acum = false;
     db.stocks.forEach(function (value, index) {
@@ -84,12 +111,13 @@ module.exports.addStock = function (stock) {
         if (!codePresent(stock)) {
             searchStockInfo(stock).then(searchStockData(stock).then(function (stockData) {
                 db.config.series.push({
-                    name: stock.code,
+                    name: stock,
                     data: stockData,
                     tooltip: {
                         valueDecimals: 2
                     }
                 });
+                console.log("ANTES DE MANDAR : "+JSON.stringify(db.config.series[db.config.series.length-1].code+" STOCK: "+JSON.stringify(stock)));
                 db.config.message = { type: "success", code: "success", description: "Stock added successfully" }
                 resolve(db);
             }))
@@ -110,17 +138,19 @@ module.exports.addStock = function (stock) {
 module.exports.removeStock = function (stock) {
     return new Promise(function (resolve, reject) {
         if (!codePresent(stock)) {
-
             db.config.message = { type: "error", code: "nonexistent", description: "Stock code not found" }
             reject(db);
         } else {
-            db.stocks.pop(stock);
-            console.log("Voy a sacar" + stock + " " + db.config.series[0].name)
-            var newSeries = db.config.series.filter(function (serie) {
+            console.log("Stock antes de calcular posiciones "+stock);
+            var indices=getStockAndSeriePosition(stock);
+            console.log(JSON.stringify(indices));
+            db.stocks.splice(indices.stocks,1);
+            /*var newSeries = db.config.series.filter(function (serie) {
                 return serie.name != stock;
             })
             console.log("Nueva SERIES: " + JSON.stringify(newSeries));
-            db.config.series = newSeries;
+            db.config.series = newSeries;*/
+            db.config.series.splice(indices.series,1);
             db.config.message = { type: "success", code: "success", description: "Stock removed successfully" }
             resolve(db);
         }
@@ -129,6 +159,13 @@ module.exports.removeStock = function (stock) {
 function getDb(stok) {
     if (db.config.message)
         delete db.config.message;
-    return db;
+    //SACAR PARA PRODUCCION
+        //if(stocks.length==0)
+        //initDB;
+        return db;
 }
 
+initDB=function(){
+    return addStock("amzn");
+        
+    } 
