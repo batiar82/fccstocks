@@ -26,3 +26,61 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.stock{
+	margin: 2px;
+	background-color: rgba(255,255,255,0.95);
+	border: 1px solid;
+  border-left: 6px solid grey;
+  
+	padding: 15px;
+	width: 370px;
+	text-align: left;
+	
+}
+.stock h2{
+	font-family: sans-serif;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.stock p{
+	font-size: 0.8em;
+	font-color: rgba(0,0,0,0.9);
+		
+}
+.fa-trash-alt{
+	position: absolute;
+	left: 94%;
+  top: 5%;
+}
+.fa-trash-alt:hover{
+	color: rgb(170, 58, 58)
+}
+.container{
+	background-color: rgba(48,48,48,1);
+	width: 80%;	
+	height: 90%;
+}
+body{
+	background-color: grey;
+}
+
+
+.search{
+	align: center;
+	margin-bottom: 10px;	
+}
+
+.header h1{
+	color: white;
+	font-size: 3em;
+	
+}
+.card h4{
+	font-size: 1em;
+	line-height: 3px
+}
+.stocks{
+  margin-left: 5px;
+}
