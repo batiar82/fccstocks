@@ -71,7 +71,7 @@ function codePresent(code){
     var acum=false;
     db.stocks.forEach(function(value,index){
         console.log("comparo "+value.code.toLowerCase()+"  "+code);
-        if(value.code.toLowerCase()==code)
+        if(value.code.toLowerCase()==code.toLowerCase())
             acum=true;
     });
     console.log("Devuelvo "+acum);
@@ -109,7 +109,7 @@ module.exports.addStock = function (stock) {
 
 module.exports.removeStock = function (stock) {
     return new Promise(function (resolve, reject) {
-        if (!db.stocks.includes(stock)) {
+        if(!codePresent(stock)){
             
             db.config.error={code: "nonexistent", description: "Stock code not found"}
             reject(db);
