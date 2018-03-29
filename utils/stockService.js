@@ -100,7 +100,7 @@ module.exports.addStock = function (stock) {
                     reject(db);
                 });
         } else {
-            db.config.error = { code: "already", description: "Stock code already present" }
+            db.config.message = { type: "error", code: "already", description: "Stock code already present" }
             reject(db);
         }
     })
