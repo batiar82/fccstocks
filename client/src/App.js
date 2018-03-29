@@ -42,8 +42,7 @@ class App extends Component {
         console.log(db.config);
         if (db.config.message) {
           this.setState({ messages: db.config.message });
-          if (db.config.message.type == "success")
-            this.setState({ config: db.config, stocks: db.stocks });
+          this.setState({ config: db.config, stocks: db.stocks });
 
         }
       }
@@ -55,12 +54,13 @@ class App extends Component {
       <div className="App">
         <div className="container">
           <Header />
-          <Search searchStock={this._searchStocks.bind(this)} message={this.state.messages} />
-          <p>{this.state.searchResult}</p>
           <ReactHighstock config={this.state.config} />
           <div className="row stocks">
-            {this.state.stocks.map((stock) => <Stock stock={stock} key={stock.code} deleteStock={this._deleteStock.bind(this)} />)}
+          <Search searchStock={this._searchStocks.bind(this)} message={this.state.messages} />          
+          {this.state.stocks.map((stock) => <Stock stock={stock} key={stock.code} deleteStock={this._deleteStock.bind(this)} />)}
+          
           </div>
+
         </div>
         <footer>
           <p>Designed for FreeCodeCamp</p>
