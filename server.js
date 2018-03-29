@@ -9,11 +9,11 @@ const port = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname,'client/build')));
 app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express from express' });
+  res.send({ express: 'Hello From Express from express'+req.hostname });
 });
 
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({server: server });
 
 
 var stockService = require("./utils/stockService.js");

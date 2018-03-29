@@ -31,7 +31,8 @@ class App extends Component {
 
   componentDidMount() {
     //var HOST = location.origin.replace(/^http/, 'ws');
-    this.connection = new WebSocket('ws://localhost:5000');
+    console.log("Locatoin "+JSON.stringify(this.props));
+    this.connection = new WebSocket('wss://https://boiling-caverns-37208.herokuapp.com');
     //this.connection = new WebSocket(HOST);
     this.connection.onmessage = evt => {
       //console.log("Me llego: "+JSON.parse(evt.data).chartData.datasets.length);
