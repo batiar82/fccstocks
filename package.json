@@ -1,18 +1,20 @@
 {
-  "name": "stock",
-  "version": "1.0.0",
-  "scripts": {
-    "client": "cd client && npm start",
-    "server": "nodemon server.js",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
-  },
-  "dependencies": {
-    "express": "^4.16.2",
-    "request": "^2.85.0",
-    "request-promise": "^4.2.2",
-    "ws": "^5.1.0"
-  },
-  "devDependencies": {
-    "concurrently": "^3.5.0"
-  }
+    "name": "stock",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "node index.js",
+        "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
+        "client": "cd client && npm start",
+        "server": "nodemon server.js",
+        "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    },
+    "dependencies": {
+        "express": "^4.16.2",
+        "request": "^2.85.0",
+        "request-promise": "^4.2.2",
+        "ws": "^5.1.0"
+    },
+    "devDependencies": {
+        "concurrently": "^3.5.0"
+    }
 }
