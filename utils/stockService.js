@@ -51,8 +51,8 @@ function searchStockInfo(code) {
             url: encodeURI(`https://api.iextrading.com/1.0/stock/${code}/company`)
         };
         rp(options).then(function (body) {
-            console.log("body " + JSON.stringify(body));
-            console.log("DESC " + body.description);
+            //console.log("body " + JSON.stringify(body));
+            //console.log("DESC " + body.description);
             var aStock = {
                 code: body.symbol,
                 description: body.description.substring(0, 100) + "...",
@@ -69,19 +69,9 @@ function searchStockInfo(code) {
 
 function getStockAndSeriePosition(code){
     var positions={};
-    var tempindex;
-    db.config.series.forEach(function(item,idex){
-        console.log("item: "+JSON.stringify(item));
-        console.log("code: "+JSON.stringify(code));
-        console.log("index "+idex);
-        console.log("iguales "+item.name.toLowerCase()==code.toLowerCase());
-        if(item.name.toLowerCase()==code.toLowerCase())
-            tempindex=idex;
-    });
+    
     console.log("INDEX LOCO: "+tempindex)
     db.config.series.forEach(function(item,idex){
-        console.log("Comparo "+item.name.toLowerCase()+" "
-        +code.toLowerCase()+" == "+item.name.toLowerCase()==code.toLowerCase()+" "+ idex)
         if(item.name.toLowerCase()==code.toLowerCase())
             positions.series=idex;
     })
@@ -117,13 +107,13 @@ module.exports.addStock = function (stock) {
                         valueDecimals: 2
                     }
                 });
-                console.log("ANTES DE MANDAR : "+JSON.stringify(db.config.series[db.config.series.length-1].code+" STOCK: "+JSON.stringify(stock)));
+                //console.log("ANTES DE MANDAR : "+JSON.stringify(db.config.series[db.config.series.length-1].code+" STOCK: "+JSON.stringify(stock)));
                 db.config.message = { type: "success", code: "success", description: "Stock added successfully" }
                 resolve(db);
             }))
                 .catch(function (error) {
                     //Tratar el error en caso q ya este en la db o que el codigo no exista
-                    console.log("Error trayendo el stock, puede ser q este o que el codigo no exista: " + error);
+                    //console.log("Error trayendo el stock, puede ser q este o que el codigo no exista: " + error);
                     db.config.message = { type: "error", code: "nonexistent", description: "Stock code not found" }
                     reject(db);
                 });
@@ -141,9 +131,9 @@ module.exports.removeStock = function (stock) {
             db.config.message = { type: "error", code: "nonexistent", description: "Stock code not found" }
             reject(db);
         } else {
-            console.log("Stock antes de calcular posiciones "+stock);
+            //console.log("Stock antes de calcular posiciones "+stock);
             var indices=getStockAndSeriePosition(stock);
-            console.log(JSON.stringify(indices));
+            //console.log(JSON.stringify(indices));
             db.stocks.splice(indices.stocks,1);
             /*var newSeries = db.config.series.filter(function (serie) {
                 return serie.name != stock;
