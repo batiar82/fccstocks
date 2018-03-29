@@ -30,7 +30,9 @@ class App extends Component {
   }
 
   componentDidMount() {
+    //var HOST = location.origin.replace(/^http/, 'ws');
     this.connection = new WebSocket('ws://localhost:40510');
+    //this.connection = new WebSocket(HOST);
     this.connection.onmessage = evt => {
       //console.log("Me llego: "+JSON.parse(evt.data).chartData.datasets.length);
       if (evt.data !== "") {
