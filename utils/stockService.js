@@ -51,11 +51,11 @@ function searchStockInfo(code) {
             url: encodeURI(`https://api.iextrading.com/1.0/stock/${code}/company`)
         };
         rp(options).then(function (body) {
-            console.log("body "+JSON.stringify(body));
-            console.log("DESC "+body.description);
+            console.log("body " + JSON.stringify(body));
+            console.log("DESC " + body.description);
             var aStock = {
                 code: body.symbol,
-                description: body.description.substring(0,100)+"...",
+                description: body.description.substring(0, 100) + "...",
                 name: body.companyName
             }
             db.stocks.push(aStock);
@@ -67,40 +67,40 @@ function searchStockInfo(code) {
     })
 };
 
-function codePresent(code){
-    var acum=false;
-    db.stocks.forEach(function(value,index){
-        console.log("comparo "+value.code.toLowerCase()+"  "+code);
-        if(value.code.toLowerCase()==code.toLowerCase())
-            acum=true;
+function codePresent(code) {
+    var acum = false;
+    db.stocks.forEach(function (value, index) {
+        console.log("comparo " + value.code.toLowerCase() + "  " + code);
+        if (value.code.toLowerCase() == code.toLowerCase())
+            acum = true;
     });
-    console.log("Devuelvo "+acum);
+    console.log("Devuelvo " + acum);
     return acum;
 }
 module.exports.addStock = function (stock) {
     return new Promise(function (resolve, reject) {
         console.log("AddStock " + stock);
 
-        if(!codePresent(stock)){
-            searchStockInfo(stock).then(searchStockData(stock).then(function(stockData){
+        if (!codePresent(stock)) {
+            searchStockInfo(stock).then(searchStockData(stock).then(function (stockData) {
                 db.config.series.push({
                     name: stock.code,
-                data: stockData,
-                tooltip: {
-                valueDecimals: 2
+                    data: stockData,
+                    tooltip: {
+                        valueDecimals: 2
                     }
                 });
-            db.config.message={code: "success", description: "Stock added successfully"}
+                db.config.message = { type: "success", code: "success", description: "Stock added successfully" }
                 resolve(db);
             }))
-            .catch(function (error) {
-                //Tratar el error en caso q ya este en la db o que el codigo no exista
-                console.log("Error trayendo el stock, puede ser q este o que el codigo no exista: " + error);
-                db.config.error={code: "nonexistent", description: "Stock code not found"}
-                reject(db);
-            });
-        }else {
-            db.config.error={code: "already", description: "Stock code already present"}
+                .catch(function (error) {
+                    //Tratar el error en caso q ya este en la db o que el codigo no exista
+                    console.log("Error trayendo el stock, puede ser q este o que el codigo no exista: " + error);
+                    db.config.message = { type: "error", code: "nonexistent", description: "Stock code not found" }
+                    reject(db);
+                });
+        } else {
+            db.config.error = { code: "already", description: "Stock code already present" }
             reject(db);
         }
     })
@@ -109,9 +109,9 @@ module.exports.addStock = function (stock) {
 
 module.exports.removeStock = function (stock) {
     return new Promise(function (resolve, reject) {
-        if(!codePresent(stock)){
-            
-            db.config.error={code: "nonexistent", description: "Stock code not found"}
+        if (!codePresent(stock)) {
+
+            db.config.message = { type: "error", code: "nonexistent", description: "Stock code not found" }
             reject(db);
         } else {
             db.stocks.pop(stock);
@@ -121,12 +121,14 @@ module.exports.removeStock = function (stock) {
             })
             console.log("Nueva SERIES: " + JSON.stringify(newSeries));
             db.config.series = newSeries;
-            db.config.message={code: "success", description: "Stock removed successfully"}
+            db.config.message = { type: "success", code: "success", description: "Stock removed successfully" }
             resolve(db);
         }
     })
 }
 function getDb(stok) {
+    if (db.config.message)
+        delete db.config.message;
     return db;
 }
 
