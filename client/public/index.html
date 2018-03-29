@@ -36,5 +36,15 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      var HOST = location.origin.replace(/^http/, 'ws')
+      //var ws = new WebSocket(HOST);
+      //var el = document.getElementById('server-time');
+      //ws.onmessage = function (event) {
+      //  el.innerHTML = 'Server time: ' + event.data;
+      //};
+      console.log("EL HOST  "+HOST);
+    </script>
+  
   </body>
 </html>
